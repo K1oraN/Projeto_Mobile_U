@@ -1,49 +1,74 @@
-# Sistema Escolar - Tela (Flutter)
+# 📱 App Escolar - Projeto Flutter
 
-Este projeto faz parte da disciplina de Coding Mobile, onde desenvolvemos um aplicativo escolar utilizando Flutter. Cada equipe é responsável por uma tela funcional do aplicativo. Neste caso, nossa equipe desenvolveu a **Tela Inicial de Coordenador**.
+Este é um projeto desenvolvido para a disciplina de **Desenvolvimento Mobile**, com foco na criação de um aplicativo escolar utilizando o framework **Flutter**.
 
-## 🎯 Objetivo
+Cada integrante do grupo é responsável por uma tela específica. Este repositório contém principalmente a **Tela Inicial do Coordenador**.
 
-Criar uma interface funcional para autenticação de alunos no sistema escolar, utilizando matrícula e senha previamente cadastradas.
+## 🚀 Objetivo Geral
 
-## 🚀 Funcionalidades Implementadas
+Desenvolver um aplicativo escolar com funcionalidades voltadas para diferentes perfis de usuários: **Alunos**, **Professores** e **Coordenadores**.
 
-- **Autenticação de Usuário:** Validação da matrícula e senha com base em dados pré-criados.
-- **Feedback de Erro:** Exibição de pop-up em caso de login inválido.
-- **Redirecionamento:** Exibição de mensagem de confirmação e redirecionamento automático em 5 segundos após login bem-sucedido.
+## 🧩 Telas do Aplicativo
 
-## 🔄 Próximos Passos
+### 1. Tela de Login
+- Autenticação de usuários com base em perfil (Aluno, Professor, Coordenador).
 
-- Esta equipe é responsável **apenas pela Tela Inicial de Coodernador**.
-- Após login bem-sucedido, o usuário será redirecionado para a **Tela Principal**, que será desenvolvida por outras equipes.
-  - Alunos: visualização de disciplinas.
-  - Professores: visualização de turmas.
-  - Coordenadores: gerenciamento de classes (CRUD).
+### 2. Tela de Perfil de Usuário
+- Visualização de informações pessoais (nome, e-mail, matrícula, etc).
+- Edição básica de dados do perfil.
 
-## 📁 Estrutura de Arquivos
+### 3. Tela Inicial do Aluno
+- Listagem das disciplinas matriculadas.
+- Acesso a detalhes das disciplinas (a definir).
 
-```
+### 4. Tela Inicial do Professor
+- Listagem das turmas que o professor leciona.
+- Acesso a alunos e conteúdo da turma (a definir).
 
-```
+### 5. Tela Inicial do Coordenador *(Responsabilidade da equipe)*
+Nesta tela, o coordenador poderá gerenciar as informações essenciais da escola. Abaixo estão as funcionalidades previstas:
 
-## ⚙️ Como Executar
+#### 📌 Funcionalidades:
+- ✅ Listar **Professores** cadastrados.
+- ✅ Listar **Alunos** cadastrados.
+- ✅ Listar **Turmas** existentes.
+- ✅ Adicionar um novo **Professor**.
+- ✅ Adicionar um novo **Aluno**.
+- ✅ Adicionar uma nova **Turma**.
+- ✅ Editar dados de um **Professor**.
+- ✅ Editar dados de um **Aluno**.
+- ✅ Editar dados de uma **Turma**.
+- ✅ Excluir **Professores**.
+- ✅ Excluir **Alunos**.
+- ✅ Excluir **Turmas**.
 
-1. Tenha o Node.js instalado (versão recomendada 18+).
-2. Clone este repositório:
-```bash
-   git clone https://github.com/K1oraN/Projeto_Mobile_U.git
-   cd Projeto_Mobile
-```
+## 🛠 Tecnologias Utilizadas
 
-3. Instale as dependências:
-```bash
-   npm install
-```
+- [Flutter](https://flutter.dev/) - SDK de desenvolvimento mobile.
+- [Dart](https://dart.dev/) - Linguagem de programação.
+- Gerenciamento de estado simples (ex: setState ou Provider, a definir).
+- Armazenamento de dados local (opcional para prototipagem).
 
-4. Configure o arquivo `.env` com suas variáveis de ambiente.
+## 🔖 Organização do Código
 
-5. Execute o projeto
+O projeto segue a estrutura padrão recomendada pelo Flutter:
 
-```bash
-   node index.js
- ```
+lib/
+├── main.dart
+├── screens/
+│ ├── login_screen.dart
+│ ├── perfil_screen.dart
+│ ├── aluno_home_screen.dart
+│ ├── professor_home_screen.dart
+│ └── coordenador_home_screen.dart
+├── models/
+├── widgets/
+└── services/
+
+## 👥 Equipe do Projeto
+
+- **Tela de Coordenador: Lucas Alexandre e Alex Vinicius**
+
+## 📌 Observações
+
+Este projeto é acadêmico e visa a prática de desenvolvimento mobile utilizando Flutter. Funcionalidades complexas como autenticação real ou banco de dados online não são exigidas nesta etapa.

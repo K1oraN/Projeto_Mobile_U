@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
+import 'screens/coordenador_home_screen.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(AppEscola());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class AppEscola extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      title: 'App Escolar - Coordenador',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: CoordenadorHomeScreen(),
     );
   }
 }
