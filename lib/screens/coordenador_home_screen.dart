@@ -8,26 +8,69 @@ class CoordenadorHomeScreen extends StatefulWidget {
 }
 
 class _CoordenadorHomeScreenState extends State<CoordenadorHomeScreen> {
-  List<Pessoa> professores = [Pessoa('João Silva'), Pessoa('Maria Oliveira')];
-  List<Pessoa> alunos = [Pessoa('Ana Paula'), Pessoa('Carlos Souza')];
-  List<Turma> turmas = [Turma('Turma A'), Turma('Turma B')];
+  late List<Professor> professores;
+  late List<Aluno> alunos;
+  late List<Turma> turmas;
 
-  void _adicionarPessoa(List<Pessoa> lista, String titulo) {
+  @override
+  void initState() {
+    super.initState();
+
+    professores = [
+      Professor(nome: 'João Silva', id: 'P01', materia: 'Matemática'),
+      Professor(nome: 'Maria Oliveira', id: 'P02', materia: 'História'),
+    ];
+
+    alunos = [
+      Aluno(nome: 'Ana Paula', matricula: 'A123', curso: 'Engenharia'),
+      Aluno(nome: 'Carlos Souza', matricula: 'A124', curso: 'Medicina'),
+    ];
+
+    turmas = [
+      Turma(nome: 'Turma A', periodo: 'Manhã', professor: professores[0]),
+      Turma(nome: 'Turma B', periodo: 'Tarde', professor: professores[1]),
+    ];
+  }
+
+  // ====== Professores ======
+
+  void _adicionarProfessor() {
+    String nome = '';
+    String id = '';
+    String materia = '';
+
     showDialog(
       context: context,
       builder: (context) {
-        String nome = '';
         return AlertDialog(
-          title: Text('Adicionar $titulo'),
-          content: TextField(
-            onChanged: (value) => nome = value,
-            decoration: InputDecoration(hintText: 'Digite o nome'),
+          title: Text('Adicionar Professor'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  decoration: InputDecoration(hintText: 'Nome'),
+                  onChanged: (value) => nome = value,
+                ),
+                TextField(
+                  decoration: InputDecoration(hintText: 'ID'),
+                  onChanged: (value) => id = value,
+                ),
+                TextField(
+                  decoration: InputDecoration(hintText: 'Matéria'),
+                  onChanged: (value) => materia = value,
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                if (nome.isNotEmpty) {
-                  setState(() => lista.add(Pessoa(nome)));
+                if (nome.isNotEmpty && id.isNotEmpty && materia.isNotEmpty) {
+                  setState(() {
+                    professores.add(
+                      Professor(nome: nome, id: id, materia: materia),
+                    );
+                  });
                 }
                 Navigator.pop(context);
               },
@@ -39,81 +82,57 @@ class _CoordenadorHomeScreenState extends State<CoordenadorHomeScreen> {
     );
   }
 
-  void _editarPessoa(List<Pessoa> lista, int index) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        String nome = lista[index].nome;
-        TextEditingController controller = TextEditingController(text: nome);
-        return AlertDialog(
-          title: Text('Editar'),
-          content: TextField(
-            controller: controller,
-            onChanged: (value) => nome = value,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                setState(() => lista[index].nome = nome);
-                Navigator.pop(context);
-              },
-              child: Text('Salvar'),
-            ),
-          ],
-        );
-      },
+  void _editarProfessor(int index) {
+    String nome = professores[index].nome;
+    String id = professores[index].id;
+    String materia = professores[index].materia;
+
+    TextEditingController nomeController = TextEditingController(text: nome);
+    TextEditingController idController = TextEditingController(text: id);
+    TextEditingController materiaController = TextEditingController(
+      text: materia,
     );
-  }
 
-  void _excluirPessoa(List<Pessoa> lista, int index) {
-    setState(() => lista.removeAt(index));
-  }
-
-  void _adicionarTurma() {
     showDialog(
       context: context,
       builder: (context) {
-        String nome = '';
         return AlertDialog(
-          title: Text('Adicionar Turma'),
-          content: TextField(
-            onChanged: (value) => nome = value,
-            decoration: InputDecoration(hintText: 'Digite o nome da turma'),
+          title: Text('Editar Professor'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  controller: nomeController,
+                  decoration: InputDecoration(hintText: 'Nome'),
+                  onChanged: (value) => nome = value,
+                ),
+                TextField(
+                  controller: idController,
+                  decoration: InputDecoration(hintText: 'ID'),
+                  onChanged: (value) => id = value,
+                ),
+                TextField(
+                  controller: materiaController,
+                  decoration: InputDecoration(hintText: 'Matéria'),
+                  onChanged: (value) => materia = value,
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                if (nome.isNotEmpty) {
-                  setState(() => turmas.add(Turma(nome)));
+                if (nome.isNotEmpty && id.isNotEmpty && materia.isNotEmpty) {
+                  setState(() {
+                    professores[index] = Professor(
+                      nome: nome,
+                      id: id,
+                      materia: materia,
+                    );
+                  });
                 }
                 Navigator.pop(context);
               },
-              child: Text('Adicionar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _editarTurma(int index) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        String nome = turmas[index].nome;
-        TextEditingController controller = TextEditingController(text: nome);
-        return AlertDialog(
-          title: Text('Editar Turma'),
-          content: TextField(
-            controller: controller,
-            onChanged: (value) => nome = value,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                setState(() => turmas[index].nome = nome);
-                Navigator.pop(context);
-              },
               child: Text('Salvar'),
             ),
           ],
@@ -122,11 +141,13 @@ class _CoordenadorHomeScreenState extends State<CoordenadorHomeScreen> {
     );
   }
 
-  void _excluirTurma(int index) {
-    setState(() => turmas.removeAt(index));
+  void _excluirProfessor(int index) {
+    setState(() {
+      professores.removeAt(index);
+    });
   }
 
-  Widget _buildPessoaSection(String titulo, List<Pessoa> lista) {
+  Widget _buildProfessorSection() {
     return Card(
       margin: EdgeInsets.all(10),
       child: Padding(
@@ -138,28 +159,30 @@ class _CoordenadorHomeScreenState extends State<CoordenadorHomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  titulo,
+                  'Professores',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 IconButton(
                   icon: Icon(Icons.add),
-                  onPressed: () => _adicionarPessoa(lista, titulo),
+                  onPressed: _adicionarProfessor,
                 ),
               ],
             ),
-            ...List.generate(lista.length, (index) {
+            ...List.generate(professores.length, (index) {
+              final prof = professores[index];
               return ListTile(
-                title: Text(lista[index].nome),
+                title: Text(prof.nome),
+                subtitle: Text('ID: ${prof.id} - Matéria: ${prof.materia}'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
                       icon: Icon(Icons.edit),
-                      onPressed: () => _editarPessoa(lista, index),
+                      onPressed: () => _editarProfessor(index),
                     ),
                     IconButton(
                       icon: Icon(Icons.delete),
-                      onPressed: () => _excluirPessoa(lista, index),
+                      onPressed: () => _excluirProfessor(index),
                     ),
                   ],
                 ),
@@ -169,6 +192,325 @@ class _CoordenadorHomeScreenState extends State<CoordenadorHomeScreen> {
         ),
       ),
     );
+  }
+
+  // ====== Alunos (mantive seu código original, só adaptei pra usar Aluno) ======
+
+  void _adicionarAluno() {
+    String nome = '';
+    String matricula = '';
+    String curso = '';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Adicionar Aluno'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  decoration: InputDecoration(hintText: 'Nome'),
+                  onChanged: (value) => nome = value,
+                ),
+                TextField(
+                  decoration: InputDecoration(hintText: 'Matrícula'),
+                  onChanged: (value) => matricula = value,
+                ),
+                TextField(
+                  decoration: InputDecoration(hintText: 'Curso'),
+                  onChanged: (value) => curso = value,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                if (nome.isNotEmpty &&
+                    matricula.isNotEmpty &&
+                    curso.isNotEmpty) {
+                  setState(() {
+                    alunos.add(
+                      Aluno(nome: nome, matricula: matricula, curso: curso),
+                    );
+                  });
+                }
+                Navigator.pop(context);
+              },
+              child: Text('Adicionar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _editarAluno(int index) {
+    String nome = alunos[index].nome;
+    String matricula = alunos[index].matricula;
+    String curso = alunos[index].curso;
+
+    TextEditingController nomeController = TextEditingController(text: nome);
+    TextEditingController matriculaController = TextEditingController(
+      text: matricula,
+    );
+    TextEditingController cursoController = TextEditingController(text: curso);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Editar Aluno'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  controller: nomeController,
+                  decoration: InputDecoration(hintText: 'Nome'),
+                  onChanged: (value) => nome = value,
+                ),
+                TextField(
+                  controller: matriculaController,
+                  decoration: InputDecoration(hintText: 'Matrícula'),
+                  onChanged: (value) => matricula = value,
+                ),
+                TextField(
+                  controller: cursoController,
+                  decoration: InputDecoration(hintText: 'Curso'),
+                  onChanged: (value) => curso = value,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                if (nome.isNotEmpty &&
+                    matricula.isNotEmpty &&
+                    curso.isNotEmpty) {
+                  setState(() {
+                    alunos[index] = Aluno(
+                      nome: nome,
+                      matricula: matricula,
+                      curso: curso,
+                    );
+                  });
+                }
+                Navigator.pop(context);
+              },
+              child: Text('Salvar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _excluirAluno(int index) {
+    setState(() {
+      alunos.removeAt(index);
+    });
+  }
+
+  Widget _buildAlunoSection() {
+    return Card(
+      margin: EdgeInsets.all(10),
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Alunos',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                IconButton(icon: Icon(Icons.add), onPressed: _adicionarAluno),
+              ],
+            ),
+            ...List.generate(alunos.length, (index) {
+              final aluno = alunos[index];
+              return ListTile(
+                title: Text(aluno.nome),
+                subtitle: Text(
+                  'Matrícula: ${aluno.matricula} - Curso: ${aluno.curso}',
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () => _editarAluno(index),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => _excluirAluno(index),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ====== Turmas ======
+
+  void _adicionarTurma() {
+    String nome = '';
+    String periodo = '';
+    Professor? professorSelecionado;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return AlertDialog(
+              title: Text('Adicionar Turma'),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(hintText: 'Nome da Turma'),
+                      onChanged: (value) => nome = value,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(hintText: 'Período'),
+                      onChanged: (value) => periodo = value,
+                    ),
+                    DropdownButton<Professor>(
+                      hint: Text('Selecione o Professor'),
+                      value: professorSelecionado,
+                      isExpanded: true,
+                      items:
+                          professores.map((prof) {
+                            return DropdownMenuItem<Professor>(
+                              value: prof,
+                              child: Text('${prof.nome} (${prof.materia})'),
+                            );
+                          }).toList(),
+                      onChanged: (prof) {
+                        setStateDialog(() {
+                          professorSelecionado = prof;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    if (nome.isNotEmpty &&
+                        periodo.isNotEmpty &&
+                        professorSelecionado != null) {
+                      setState(() {
+                        turmas.add(
+                          Turma(
+                            nome: nome,
+                            periodo: periodo,
+                            professor: professorSelecionado!,
+                          ),
+                        );
+                      });
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text('Adicionar'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _editarTurma(int index) {
+    String nome = turmas[index].nome;
+    String periodo = turmas[index].periodo;
+    Professor professorSelecionado = turmas[index].professor;
+
+    TextEditingController nomeController = TextEditingController(text: nome);
+    TextEditingController periodoController = TextEditingController(
+      text: periodo,
+    );
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return AlertDialog(
+              title: Text('Editar Turma'),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: nomeController,
+                      decoration: InputDecoration(hintText: 'Nome da Turma'),
+                      onChanged: (value) => nome = value,
+                    ),
+                    TextField(
+                      controller: periodoController,
+                      decoration: InputDecoration(hintText: 'Período'),
+                      onChanged: (value) => periodo = value,
+                    ),
+                    DropdownButton<Professor>(
+                      isExpanded: true,
+                      value: professorSelecionado,
+                      items:
+                          professores.map((prof) {
+                            return DropdownMenuItem<Professor>(
+                              value: prof,
+                              child: Text('${prof.nome} (${prof.materia})'),
+                            );
+                          }).toList(),
+                      onChanged: (prof) {
+                        setStateDialog(() {
+                          professorSelecionado = prof!;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    if (nome.isNotEmpty &&
+                        periodo.isNotEmpty &&
+                        professorSelecionado != null) {
+                      setState(() {
+                        turmas[index] = Turma(
+                          nome: nome,
+                          periodo: periodo,
+                          professor: professorSelecionado,
+                        );
+                      });
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text('Salvar'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _excluirTurma(int index) {
+    setState(() {
+      turmas.removeAt(index);
+    });
   }
 
   Widget _buildTurmaSection() {
@@ -190,8 +532,12 @@ class _CoordenadorHomeScreenState extends State<CoordenadorHomeScreen> {
               ],
             ),
             ...List.generate(turmas.length, (index) {
+              final turma = turmas[index];
               return ListTile(
-                title: Text(turmas[index].nome),
+                title: Text(turma.nome),
+                subtitle: Text(
+                  'Período: ${turma.periodo} - Professor: ${turma.professor.nome}',
+                ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -216,12 +562,12 @@ class _CoordenadorHomeScreenState extends State<CoordenadorHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Tela do Coordenador')),
+      appBar: AppBar(title: Text('Coordenador')),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildPessoaSection('Professores', professores),
-            _buildPessoaSection('Alunos', alunos),
+            _buildProfessorSection(),
+            _buildAlunoSection(),
             _buildTurmaSection(),
           ],
         ),
