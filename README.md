@@ -53,7 +53,7 @@ Nesta tela, o coordenador poderá gerenciar as informações essenciais da escol
 
 O projeto segue a estrutura padrão recomendada pelo Flutter:
 
-'''
+```
 lib/
 ├── main.dart
 ├── screens/
@@ -65,7 +65,7 @@ lib/
 ├── models/
 ├── widgets/
 └── services/
-'''
+```
 
 ## 👥 Equipe do Projeto
 
